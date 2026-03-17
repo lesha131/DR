@@ -49,17 +49,16 @@
         }
 
         /* Контейнер для текста */
-        .content {
-            position: absolute;
-            bottom: 15%; /* Отступ снизу */
-            left: 0;
-            width: 100%;
-            text-align: center;
-            color: white;
-            text-shadow: 2px 2px 4px #000000;
-            z-index: 10;
-            padding: 20px;
-        }
+       .final-card img {
+    height: 95vh; /* 95% от высоты экрана */
+    width: auto; /* Ширина подстроится */
+    max-width: 98%; /* Но если вдруг станет слишком широкой для телефона, ограничим */
+    object-fit: scale-down;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(255,255,255,0.5);
+    border: 5px solid white;
+    animation: popIn 0.8s ease-out;
+}
 
         .message-text {
             font-size: 2.5rem;
