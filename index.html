@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Музыкальная открытка</title>
     <style>
-* {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -13,13 +13,13 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            overflow: hidden; /* Убираем прокрутку */
+            overflow: hidden;
             height: 100vh;
             width: 100vw;
             background-color: black;
         }
 
-        /* Контейнер для фонового видео (оно же фото) */
+        /* Контейнер для фонового видео (или фото) */
         #background-video {
             position: fixed;
             right: 0;
@@ -28,34 +28,35 @@
             min-height: 100%;
             width: auto;
             height: auto;
-            z-index: -100; /* Чтобы быть на заднем плане */
+            z-index: -100;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            object-fit: cover; /* Чтобы видео/фото заполняло экран как обои */
+            background-image: url('foto.jpg'); /* Фото на случай если видео не грузится */
+            object-fit: cover;
         }
 
-        /* Убираем затемнение (overlay) или делаем его прозрачным */
+        /* Затемнение - делаем прозрачным */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0); /* Полностью прозрачный */
+            background: rgba(0, 0, 0, 0); /* Прозрачный */
             z-index: -50;
         }
 
-        /* Контейнер для текста */
+        /* Контейнер для текста - ПО ЦЕНТРУ И ЧЕРНЫЙ */
         .content {
             position: absolute;
-            top: 50%; /* Сдвигаем на середину по вертикали */
-            left: 50%; /* Сдвигаем на середину по горизонтали */
-            transform: translate(-50%, -50%); /* Выравниваем точно по центру */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: 100%;
             text-align: center;
-            color: black; /* Меняем цвет на черный */
-            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8); /* Добавляем белую полупрозрачную тень, чтобы текст было видно на светлом фоне */
+            color: black; /* Черный текст */
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8); /* Белая тень для читаемости */
             z-index: 10;
             padding: 20px;
         }
@@ -66,7 +67,7 @@
             margin-bottom: 20px;
             opacity: 0;
             transition: opacity 1.5s ease-in-out;
-            min-height: 4rem; /* Чтобы страница не прыгала */
+            min-height: 4rem;
         }
 
         .message-text.visible {
@@ -80,7 +81,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: none; /* Скрыто по умолчанию */
+            display: none;
             justify-content: center;
             align-items: center;
             background-color: rgba(0, 0, 0, 0.8);
@@ -91,118 +92,20 @@
         .final-card img {
             max-width: 90%;
             max-height: 90%;
+            object-fit: contain; /* Фото целиком, без обрезания */
             border-radius: 20px;
             box-shadow: 0 0 30px rgba(255,255,255,0.5);
             border: 5px solid white;
             animation: popIn 0.8s ease-out;
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* Инструкция по клику для браузеров с авто bloqueo */
-        .hint {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            background: rgba(0,0,0,0.5);
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 14px;
-            z-index: 200;
-            cursor: pointer;
-        }
-
-        @media (max-width: 600px) {
-            .message-text {
-                font-size: 1.5rem;
-            }
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            overflow: hidden; /* Убираем прокрутку */
-            height: 100vh;
-            width: 100vw;
             background-color: black;
         }
 
-        /* Контейнер для фонового видео (оно же фото) */
-        #background-video {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -100; /* Чтобы быть на заднем плане */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            /* Если видео нет, можно показать картинку через background */
-            background-image: url('foto.jpg');
-            object-fit: cover; /* Чтобы видео/фото заполняло экран как обои */
-        }
-
-        /* Затемнение для лучшей читаемости текста */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.3); /* Легкое затемнение */
-            z-index: -50;
-        }
-
-        /* Контейнер для текста */
-       .content {
-            position: absolute;
-            bottom: 15%; /* Отступ снизу */
-            left: 0;
-            width: 100%;
-            text-align: center;
-            color: white;
-            text-shadow: 2px 2px 4px #000000;
-            z-index: 10;
-            padding: 20px;
-        }
-
-        .message-text {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-            min-height: 4rem; /* Чтобы страница не прыгала */
-        }
-
-        .message-text.visible {
-            opacity: 1;
-        }
-
-        /* Стили для финальной открытки (фото) */
-       .final-card img {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain; /* Целиком вмещаем картинку */
-    border-radius: 20px;
-    box-shadow: 0 0 30px rgba(255,255,255,0.5);
-    border: 5px solid white;
-    animation: popIn 0.8s ease-out;
-    background-color: black; /* Чтобы полосы были черными, если фон вдруг не тот */
-}
-
         @keyframes popIn {
             0% { transform: scale(0.5); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* Инструкция по клику для браузеров с авто bloqueo */
+        /* Инструкция по клику */
         .hint {
             position: absolute;
             top: 20px;
@@ -226,14 +129,12 @@
 <body>
 
     <!-- 1. Фоновое ВИДЕО (или ФОТО) -->
-    <!-- Замени 'video.mp4' на свое видео. Если видео нет, раскомментируй строчку с background-image в CSS -->
-    <video autoplay muted loop id="background-video" poster="foto.jpg"> <!-- poster покажет фото, пока видео грузится -->
+    <video autoplay muted loop id="background-video" poster="foto.jpg">
         <source src="video.mp4" type="video/mp4">
-        <!-- Если браузер не поддерживает видео, покажет просто фото через CSS background -->
         Твой браузер не поддерживает видео.
     </video>
 
-    <!-- Затемняющий слой -->
+    <!-- Затемняющий слой (теперь прозрачный) -->
     <div class="overlay"></div>
 
     <!-- Контейнер для текста -->
@@ -243,28 +144,21 @@
 
     <!-- Финальная открытка (ФОТО) -->
     <div id="finalCard" class="final-card">
-        <!-- ЗАМЕНИ 'foto.jpg' на название твоей фотографии -->
         <img src="foto.jpg" alt="Фото для тебя">
     </div>
 
     <!-- Подсказка для пользователя -->
     <div class="hint" id="startHint">🔊 Нажми здесь, чтобы включить музыку и начать</div>
 
-    <!-- Аудио плеер (скрытый) -->
+    <!-- Аудио плеер -->
     <audio id="bgMusic" loop preload="auto">
-        <!-- ЗАМЕНИ 'music.mp3' на название твоего музыкального файла -->
         <source src="music.mp3" type="audio/mpeg">
         Твой браузер не поддерживает аудио.
     </audio>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- НАСТРОЙКИ (Измени под себя) ---
-            const musicFile = 'music.mp3';      // Путь к музыке
-            const photoFile = 'foto.jpg';        // Путь к финальному фото
-            //const backgroundVideoFile = 'video.mp4'; // Путь к фоновому видео (если нужно)
-            
-            // Текст, который будет появляться
+            // --- НАСТРОЙКИ ---
             const messages = [
                 "Привет, это поздравление для тебя",
                 "Поздравляю с днем рождения тебя",
@@ -273,14 +167,10 @@
                 "Я тебя люблю! ❤️"
             ];
             
-            // Время показа каждого сообщения (в миллисекундах)
             const messageDuration = 4000; // 4 секунды на фразу
-            // Задержка перед показом финальной открытки (после последнего слова)
             const delayBeforeFinalCard = 2000; // 2 секунды
             // --- КОНЕЦ НАСТРОЕК ---
 
-
-            // Элементы DOM
             const audio = document.getElementById('bgMusic');
             const messageDisplay = document.getElementById('messageDisplay');
             const finalCard = document.getElementById('finalCard');
@@ -289,25 +179,21 @@
             let messageIndex = 0;
             let messageInterval;
 
-            // Функция для показа следующего сообщения
             function showNextMessage() {
                 if (messageIndex < messages.length) {
                     messageDisplay.textContent = messages[messageIndex];
                     messageDisplay.classList.add('visible');
                     messageIndex++;
                 } else {
-                    // Все сообщения показаны
                     clearInterval(messageInterval);
                     messageDisplay.classList.remove('visible');
                     
-                    // Через пару секунд показываем финальную открытку
                     setTimeout(() => {
                         finalCard.style.display = 'flex';
                     }, delayBeforeFinalCard);
                 }
             }
 
-            // Функция для сброса и скрытия сообщений (если нужно перезапустить)
             function resetMessages() {
                 messageIndex = 0;
                 messageDisplay.classList.remove('visible');
@@ -316,43 +202,33 @@
                 }
             }
 
-            // Запуск всего процесса (музыка + текст)
             function startExperience() {
-                // Прячем подсказку
                 startHint.style.display = 'none';
                 
-                // Пытаемся включить музыку
                 audio.play().catch(e => {
                     console.log("Автовоспроизведение заблокировано браузером. Но мы уже нажали на кнопку, значит всё ок.");
                 });
 
-                // Сбрасываем и запускаем показ сообщений
                 resetMessages();
                 
-                // Показываем первое сообщение сразу
                 setTimeout(() => {
                     showNextMessage();
-                }, 500); // Небольшая задержка после клика
+                }, 500);
                 
-                // Запускаем интервал для смены сообщений
                 messageInterval = setInterval(showNextMessage, messageDuration);
             }
 
-            // Вешаем событие на клик по подсказке (или по любому месту экрана)
             startHint.addEventListener('click', function() {
                 startExperience();
             });
 
-            // Также можно сделать, чтобы клик по любому месту запускал, если подсказка еще видна
             document.body.addEventListener('click', function() {
                 if (startHint.style.display !== 'none') {
                     startExperience();
                 }
-            }, { once: true }); // Сработает только один раз
+            }, { once: true });
 
-            // Если браузер все же даст автозапуск (маловероятно), то скроем подсказку
             audio.play().then(() => {
-                // Музыка запустилась сама (например, в Safari с настройками)
                 startHint.style.display = 'none';
                 resetMessages();
                 setTimeout(() => {
@@ -360,7 +236,6 @@
                 }, 500);
                 messageInterval = setInterval(showNextMessage, messageDuration);
             }).catch(() => {
-                // Ошибка автозапуска - ждем клика. Подсказка уже висит.
                 console.log("Ожидание клика для запуска музыки.");
             });
 
