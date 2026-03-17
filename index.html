@@ -19,32 +19,19 @@
             background-color: black;
         }
 
-        /* Контейнер для фонового видео (или фото) */
-        #background-video {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -100;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-image: url('foto.jpg'); /* Фото на случай если видео не грузится */
-            object-fit: cover;
-        }
-
-        /* Затемнение - делаем прозрачным */
-        .overlay {
+        /* ФОН - теперь просто фото (вертикальное) */
+        .background-photo {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0); /* Прозрачный */
-            z-index: -50;
+            background-image: url('foto.jpg');
+            background-size: contain; /* Фото ВИДНО ЦЕЛИКОМ! */
+            background-position: center center; /* По центру */
+            background-repeat: no-repeat; /* Не повторяется */
+            background-color: black; /* Чтобы края были черными */
+            z-index: -100;
         }
 
         /* Контейнер для текста - ПО ЦЕНТРУ И ЧЕРНЫЙ */
@@ -55,8 +42,8 @@
             transform: translate(-50%, -50%);
             width: 100%;
             text-align: center;
-            color: black; /* Черный текст */
-            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8); /* Белая тень для читаемости */
+            color: black;
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.9); /* Белая тень */
             z-index: 10;
             padding: 20px;
         }
@@ -84,20 +71,18 @@
             display: none;
             justify-content: center;
             align-items: center;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.9);
             z-index: 100;
-            backdrop-filter: blur(5px);
         }
 
         .final-card img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain; /* Фото целиком, без обрезания */
+            max-width: 95%;
+            max-height: 95%;
+            object-fit: contain; /* Фото целиком */
             border-radius: 20px;
             box-shadow: 0 0 30px rgba(255,255,255,0.5);
             border: 5px solid white;
             animation: popIn 0.8s ease-out;
-            background-color: black;
         }
 
         @keyframes popIn {
@@ -121,50 +106,44 @@
 
         @media (max-width: 600px) {
             .message-text {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. Фоновое ВИДЕО (или ФОТО) -->
-    <video autoplay muted loop id="background-video" poster="foto.jpg">
-        <source src="video.mp4" type="video/mp4">
-        Твой браузер не поддерживает видео.
-    </video>
-
-    <!-- Затемняющий слой (теперь прозрачный) -->
-    <div class="overlay"></div>
+    <!-- ФОН - просто фото (вертикальное) -->
+    <div class="background-photo"></div>
 
     <!-- Контейнер для текста -->
     <div class="content">
         <div id="messageDisplay" class="message-text"></div>
     </div>
 
-    <!-- Финальная открытка (ФОТО) -->
+    <!-- Финальная открытка (то же фото, но с эффектом) -->
     <div id="finalCard" class="final-card">
         <img src="foto.jpg" alt="Фото для тебя">
     </div>
 
     <!-- Подсказка для пользователя -->
-    <div class="hint" id="startHint">🔊 Нажми здесь, чтобы включить музыку и начать</div>
+    <div class="hint" id="startHint">🔊 Нажми сюда</div>
 
     <!-- Аудио плеер -->
     <audio id="bgMusic" loop preload="auto">
         <source src="music.mp3" type="audio/mpeg">
-        Твой браузер не поддерживает аудио.
     </audio>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- НАСТРОЙКИ ---
+            // --- ТВОЙ ТЕКСТ (можешь изменить) ---
             const messages = [
                 "Привет, это поздравление для тебя",
-                "Поздравляю с днем рождения тебя",
-                "Желаю счастья, здоровья, никогда не грустить и радоваться всегда в жизни",
-                "Спасибо, что ты есть.",
-                "Я тебя люблю! ❤️"
+                "Поздравляю с днем рождения!",
+                "Желаю счастья, здоровья,", 
+                "никогда не грустить",
+                "и радоваться каждому дню!",
+                "Спасибо, что ты есть ❤️"
             ];
             
             const messageDuration = 4000; // 4 секунды на фразу
@@ -206,7 +185,7 @@
                 startHint.style.display = 'none';
                 
                 audio.play().catch(e => {
-                    console.log("Автовоспроизведение заблокировано браузером. Но мы уже нажали на кнопку, значит всё ок.");
+                    console.log("Ждем клик пользователя");
                 });
 
                 resetMessages();
@@ -236,7 +215,7 @@
                 }, 500);
                 messageInterval = setInterval(showNextMessage, messageDuration);
             }).catch(() => {
-                console.log("Ожидание клика для запуска музыки.");
+                console.log("Нажми на экран для запуска");
             });
 
         });
