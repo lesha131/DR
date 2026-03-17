@@ -5,10 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Музыкальная открытка</title>
     <style>
-        * {
+* {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow: hidden; /* Убираем прокрутку */
+            height: 100vh;
+            width: 100vw;
+            background-color: black;
+        }
+
+        /* Контейнер для фонового видео (оно же фото) */
+        #background-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100; /* Чтобы быть на заднем плане */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            object-fit: cover; /* Чтобы видео/фото заполняло экран как обои */
+        }
+
+        /* Убираем затемнение (overlay) или делаем его прозрачным */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0); /* Полностью прозрачный */
+            z-index: -50;
+        }
+
+        /* Контейнер для текста */
+        .content {
+            position: absolute;
+            top: 50%; /* Сдвигаем на середину по вертикали */
+            left: 50%; /* Сдвигаем на середину по горизонтали */
+            transform: translate(-50%, -50%); /* Выравниваем точно по центру */
+            width: 100%;
+            text-align: center;
+            color: black; /* Меняем цвет на черный */
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8); /* Добавляем белую полупрозрачную тень, чтобы текст было видно на светлом фоне */
+            z-index: 10;
+            padding: 20px;
+        }
+
+        .message-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            min-height: 4rem; /* Чтобы страница не прыгала */
+        }
+
+        .message-text.visible {
+            opacity: 1;
+        }
+
+        /* Стили для финальной открытки (фото) */
+        .final-card {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none; /* Скрыто по умолчанию */
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .final-card img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255,255,255,0.5);
+            border: 5px solid white;
+            animation: popIn 0.8s ease-out;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Инструкция по клику для браузеров с авто bloqueo */
+        .hint {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            z-index: 200;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .message-text {
+                font-size: 1.5rem;
+            }
         }
 
         body {
@@ -75,28 +186,15 @@
         }
 
         /* Стили для финальной открытки (фото) */
-       .final-card {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none; /* Скрыто по умолчанию */
-            justify-content: center;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 100;
-            backdrop-filter: blur(5px);
-        }
-
-        .final-card img {
-    max-width: 95%;
-    max-height: 95%;
-    object-fit: scale-down;
+       .final-card img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain; /* Целиком вмещаем картинку */
     border-radius: 20px;
     box-shadow: 0 0 30px rgba(255,255,255,0.5);
     border: 5px solid white;
     animation: popIn 0.8s ease-out;
+    background-color: black; /* Чтобы полосы были черными, если фон вдруг не тот */
 }
 
         @keyframes popIn {
