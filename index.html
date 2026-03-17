@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Музыкальная открытка</title>
     <style>
         * {
@@ -11,57 +11,69 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Arial', sans-serif;
+        html, body {
+            width: 100%;
+            height: 100%;
             overflow: hidden;
-            height: 100vh;
-            width: 100vw;
             background-color: black;
         }
 
-        /* ФОН - теперь просто фото (вертикальное) */
+        /* Фоновое фото - теперь точно на весь экран */
         .background-photo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('foto.jpg');
+            background-size: cover; /* Фото покрывает весь экран */
+            background-position: center center;
+            background-repeat: no-repeat;
+            z-index: 1;
+        }
+
+        /* Полупрозрачный слой для читаемости текста */
+        .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('foto.jpg');
-            background-size: contain; /* Фото ВИДНО ЦЕЛИКОМ! */
-            background-position: center center; /* По центру */
-            background-repeat: no-repeat; /* Не повторяется */
-            background-color: black; /* Чтобы края были черными */
-            z-index: -100;
+            background-color: rgba(0, 0, 0, 0.2); /* Легкое затемнение */
+            z-index: 2;
         }
 
-        /* Контейнер для текста - ПО ЦЕНТРУ И ЧЕРНЫЙ */
+        /* Контейнер для текста */
         .content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            text-align: center;
-            color: black;
-            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.9); /* Белая тень */
-            z-index: 10;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
             padding: 20px;
         }
 
         .message-text {
+            color: black;
             font-size: 2.5rem;
             font-weight: bold;
-            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 15px white, 0 0 5px white;
+            max-width: 90%;
+            word-wrap: break-word;
             opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-            min-height: 4rem;
+            transition: opacity 1s ease;
         }
 
         .message-text.visible {
             opacity: 1;
         }
 
-        /* Стили для финальной открытки (фото) */
+        /* Финальная открытка */
         .final-card {
             position: fixed;
             top: 0;
@@ -69,155 +81,121 @@
             width: 100%;
             height: 100%;
             display: none;
-            justify-content: center;
             align-items: center;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 100;
+            justify-content: center;
+            background-color: black;
+            z-index: 4;
         }
 
         .final-card img {
             max-width: 95%;
             max-height: 95%;
-            object-fit: contain; /* Фото целиком */
             border-radius: 20px;
-            box-shadow: 0 0 30px rgba(255,255,255,0.5);
             border: 5px solid white;
-            animation: popIn 0.8s ease-out;
+            box-shadow: 0 0 30px rgba(255,255,255,0.5);
+            object-fit: contain;
         }
 
-        @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* Инструкция по клику */
+        /* Кнопка запуска */
         .hint {
-            position: absolute;
+            position: fixed;
             top: 20px;
             left: 20px;
             color: white;
-            background: rgba(0,0,0,0.5);
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 14px;
-            z-index: 200;
+            background: rgba(0,0,0,0.6);
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 16px;
+            z-index: 5;
             cursor: pointer;
+            border: 1px solid white;
         }
 
         @media (max-width: 600px) {
             .message-text {
-                font-size: 1.8rem;
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ФОН - просто фото (вертикальное) -->
+    <!-- Фоновое фото -->
     <div class="background-photo"></div>
+    
+    <!-- Полупрозрачный слой -->
+    <div class="overlay"></div>
 
-    <!-- Контейнер для текста -->
+    <!-- Текст -->
     <div class="content">
         <div id="messageDisplay" class="message-text"></div>
     </div>
 
-    <!-- Финальная открытка (то же фото, но с эффектом) -->
+    <!-- Финальная открытка -->
     <div id="finalCard" class="final-card">
-        <img src="foto.jpg" alt="Фото для тебя">
+        <img src="foto.jpg" alt="Фото">
     </div>
 
-    <!-- Подсказка для пользователя -->
-    <div class="hint" id="startHint">🔊 Нажми сюда</div>
+    <!-- Кнопка запуска -->
+    <div class="hint" id="startHint">🔊 Начать</div>
 
-    <!-- Аудио плеер -->
+    <!-- Музыка -->
     <audio id="bgMusic" loop preload="auto">
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- ТВОЙ ТЕКСТ (можешь изменить) ---
-            const messages = [
-                "Привет, это поздравление для тебя",
-                "Поздравляю с днем рождения!",
-                "Желаю счастья, здоровья,", 
-                "никогда не грустить",
-                "и радоваться каждому дню!",
-                "Спасибо, что ты есть ❤️"
-            ];
-            
-            const messageDuration = 4000; // 4 секунды на фразу
-            const delayBeforeFinalCard = 2000; // 2 секунды
-            // --- КОНЕЦ НАСТРОЕК ---
+        const messages = [
+            "Привет, это поздравление для тебя",
+            "Поздравляю с днем рождения!",
+            "Желаю счастья и здоровья",
+            "Никогда не грустить",
+            "Радоваться каждому дню",
+            "Спасибо, что ты есть❤️",
+            "С днем рождения!"
+        ];
+        
+        const audio = document.getElementById('bgMusic');
+        const messageDisplay = document.getElementById('messageDisplay');
+        const finalCard = document.getElementById('finalCard');
+        const startHint = document.getElementById('startHint');
+        
+        let index = 0;
+        let interval;
 
-            const audio = document.getElementById('bgMusic');
-            const messageDisplay = document.getElementById('messageDisplay');
-            const finalCard = document.getElementById('finalCard');
-            const startHint = document.getElementById('startHint');
-            
-            let messageIndex = 0;
-            let messageInterval;
-
-            function showNextMessage() {
-                if (messageIndex < messages.length) {
-                    messageDisplay.textContent = messages[messageIndex];
-                    messageDisplay.classList.add('visible');
-                    messageIndex++;
-                } else {
-                    clearInterval(messageInterval);
-                    messageDisplay.classList.remove('visible');
-                    
-                    setTimeout(() => {
-                        finalCard.style.display = 'flex';
-                    }, delayBeforeFinalCard);
-                }
-            }
-
-            function resetMessages() {
-                messageIndex = 0;
+        function showMessage() {
+            if (index < messages.length) {
+                messageDisplay.textContent = messages[index];
+                messageDisplay.classList.add('visible');
+                index++;
+            } else {
+                clearInterval(interval);
                 messageDisplay.classList.remove('visible');
-                if (messageInterval) {
-                    clearInterval(messageInterval);
-                }
-            }
-
-            function startExperience() {
-                startHint.style.display = 'none';
-                
-                audio.play().catch(e => {
-                    console.log("Ждем клик пользователя");
-                });
-
-                resetMessages();
-                
                 setTimeout(() => {
-                    showNextMessage();
-                }, 500);
-                
-                messageInterval = setInterval(showNextMessage, messageDuration);
+                    finalCard.style.display = 'flex';
+                }, 2000);
             }
+        }
 
-            startHint.addEventListener('click', function() {
-                startExperience();
-            });
+        function start() {
+            startHint.style.display = 'none';
+            audio.play();
+            
+            index = 0;
+            messageDisplay.classList.remove('visible');
+            
+            setTimeout(() => {
+                showMessage();
+            }, 500);
+            
+            interval = setInterval(showMessage, 4000);
+        }
 
-            document.body.addEventListener('click', function() {
-                if (startHint.style.display !== 'none') {
-                    startExperience();
-                }
-            }, { once: true });
-
-            audio.play().then(() => {
-                startHint.style.display = 'none';
-                resetMessages();
-                setTimeout(() => {
-                    showNextMessage();
-                }, 500);
-                messageInterval = setInterval(showNextMessage, messageDuration);
-            }).catch(() => {
-                console.log("Нажми на экран для запуска");
-            });
-
+        startHint.addEventListener('click', start);
+        document.body.addEventListener('click', function() {
+            if (startHint.style.display !== 'none') {
+                start();
+            }
         });
     </script>
 </body>
