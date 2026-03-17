@@ -18,7 +18,7 @@
             background-color: black;
         }
 
-        /* Фоновое фото - теперь точно на весь экран */
+        /* Фоновое фото */
         .background-photo {
             position: fixed;
             top: 0;
@@ -26,20 +26,20 @@
             width: 100vw;
             height: 100vh;
             background-image: url('foto.jpg');
-            background-size: cover; /* Фото покрывает весь экран */
+            background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
             z-index: 1;
         }
 
-        /* Полупрозрачный слой для читаемости текста */
+        /* Полупрозрачный слой */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.2); /* Легкое затемнение */
+            background-color: rgba(0, 0, 0, 0.2);
             z-index: 2;
         }
 
@@ -66,7 +66,7 @@
             max-width: 90%;
             word-wrap: break-word;
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: opacity 0.5s ease; /* Более быстрая смена */
         }
 
         .message-text.visible {
@@ -145,16 +145,25 @@
     </audio>
 
     <script>
+        // --- ТВОЙ ТЕКСТ (можешь изменить) ---
         const messages = [
             "Привет, это поздравление для тебя",
             "Поздравляю с днем рождения!",
             "Желаю счастья и здоровья",
             "Никогда не грустить",
             "Радоваться каждому дню",
-            "Спасибо, что ты есть❤️",
-            "С днем рождения!"
+            "Спасибо, что ты есть ❤️",
+            "С днем рождения !"
         ];
         
+        // --- НАСТРОЙКИ ВРЕМЕНИ ---
+        const totalTime = 16; // Общее время показа ВСЕХ строк в секундах
+        const delayBeforeFinalCard = 1; // Задержка перед открыткой в секундах
+        
+        // Рассчитываем время на одну строку
+        const messageDuration = (totalTime / messages.length) * 1000; // Переводим в миллисекунды
+        // -----------------------------
+
         const audio = document.getElementById('bgMusic');
         const messageDisplay = document.getElementById('messageDisplay');
         const finalCard = document.getElementById('finalCard');
@@ -162,6 +171,9 @@
         
         let index = 0;
         let interval;
+
+        console.log(`Всего строк: ${messages.length}`);
+        console.log(`Время на строку: ${messageDuration}мс`);
 
         function showMessage() {
             if (index < messages.length) {
@@ -173,7 +185,7 @@
                 messageDisplay.classList.remove('visible');
                 setTimeout(() => {
                     finalCard.style.display = 'flex';
-                }, 2000);
+                }, delayBeforeFinalCard * 1000);
             }
         }
 
@@ -188,7 +200,7 @@
                 showMessage();
             }, 500);
             
-            interval = setInterval(showMessage, 4000);
+            interval = setInterval(showMessage, messageDuration);
         }
 
         startHint.addEventListener('click', start);
