@@ -73,78 +73,32 @@
             opacity: 1;
         }
 
-        /* Контейнер для сердца в правом верхнем углу */
-        .heart-container {
+        /* ПРОСТОЕ СЕРДЦЕ - смещено левее и ниже */
+        .simple-heart {
             position: fixed;
-            top: 10px;
-            right: 10px;
-            width: 150px;
-            height: 150px;
+            /* Смещение: левее на 15см (150px) и ниже на 10см (100px) */
+            top: calc(20px + 100px); /* Было top: 20px, добавили 100px */
+            right: calc(20px + 150px); /* Было right: 20px, добавили 150px чтобы сместить левее */
             z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        /* Сетка для построения сердца */
-        .heart-grid {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-        }
-
-        /* Строки сердца */
-        .heart-row {
-            display: flex;
-            gap: 2px;
-            justify-content: center;
-        }
-
-        /* Буквы сердца */
-        .heart-letter {
-            font-size: 14px;
+            font-family: monospace;
+            font-size: 20px;
             font-weight: bold;
             color: #ff3366;
-            text-shadow: 
-                0 0 5px #ff3366,
-                0 0 10px #ff3366,
-                2px 2px 4px rgba(0,0,0,0.3);
-            width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: pulse 1.5s ease-in-out infinite;
-            animation-delay: calc(var(--i) * 0.05s);
-            transform-style: preserve-3d;
-            transform: rotateY(0deg) rotateX(0deg);
-            transition: transform 0.3s;
+            text-shadow: 0 0 10px #ff3366, 0 0 20px #ff3366;
+            background-color: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 20px;
+            backdrop-filter: blur(2px);
+            animation: heartPulse 2s ease-in-out infinite;
+            line-height: 1.3;
+            text-align: center;
+            white-space: pre;
         }
 
-        /* 3D эффект при наведении */
-        .heart-letter:hover {
-            transform: rotateY(180deg) rotateX(10deg);
-            color: #ff99cc;
-        }
-
-        /* Анимации */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { 
-                transform: scale(1);
-                text-shadow: 0 0 5px #ff3366, 0 0 10px #ff3366;
-            }
-            50% { 
-                transform: scale(1.1);
-                text-shadow: 0 0 10px #ff6699, 0 0 20px #ff3366;
-            }
+        /* Анимация пульсации */
+        @keyframes heartPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         /* Финальная открытка */
@@ -189,14 +143,11 @@
             .message-text {
                 font-size: 2rem;
             }
-            .heart-container {
-                width: 120px;
-                height: 120px;
-            }
-            .heart-letter {
-                font-size: 11px;
-                width: 14px;
-                height: 14px;
+            .simple-heart {
+                font-size: 16px;
+                top: calc(10px + 70px);
+                right: calc(10px + 100px);
+                padding: 10px;
             }
         }
     </style>
@@ -209,78 +160,15 @@
     <!-- Полупрозрачный слой -->
     <div class="overlay"></div>
 
-    <!-- 3D Сердце в правом верхнем углу -->
-    <div class="heart-container">
-        <div class="heart-grid">
-            <!-- Строка 1: вершины сердца -->
-            <div class="heart-row">
-                <span class="heart-letter" style="--i:1">❤</span>
-                <span class="heart-letter" style="--i:2"> </span>
-                <span class="heart-letter" style="--i:3"> </span>
-                <span class="heart-letter" style="--i:4"> </span>
-                <span class="heart-letter" style="--i:5">❤</span>
-            </div>
-            
-            <!-- Строка 2 -->
-            <div class="heart-row">
-                <span class="heart-letter" style="--i:6">H</span>
-                <span class="heart-letter" style="--i:7">a</span>
-                <span class="heart-letter" style="--i:8">p</span>
-                <span class="heart-letter" style="--i:9">p</span>
-                <span class="heart-letter" style="--i:10">y</span>
-                <span class="heart-letter" style="--i:11">❤</span>
-            </div>
-            
-            <!-- Строка 3 -->
-            <div class="heart-row">
-                <span class="heart-letter" style="--i:12">B</span>
-                <span class="heart-letter" style="--i:13">i</span>
-                <span class="heart-letter" style="--i:14">r</span>
-                <span class="heart-letter" style="--i:15">t</span>
-                <span class="heart-letter" style="--i:16">h</span>
-                <span class="heart-letter" style="--i:17">d</span>
-                <span class="heart-letter" style="--i:18">a</span>
-                <span class="heart-letter" style="--i:19">y</span>
-            </div>
-            
-            <!-- Строка 4 -->
-            <div class="heart-row">
-                <span class="heart-letter" style="--i:20">t</span>
-                <span class="heart-letter" style="--i:21">o</span>
-                <span class="heart-letter" style="--i:22"> </span>
-                <span class="heart-letter" style="--i:23">y</span>
-                <span class="heart-letter" style="--i:24">o</span>
-                <span class="heart-letter" style="--i:25">u</span>
-                <span class="heart-letter" style="--i:26">!</span>
-            </div>
-            
-            <!-- Строка 5 -->
-            <div class="heart-row">
-                <span class="heart-letter" style="--i:27">❤</span>
-                <span class="heart-letter" style="--i:28"> </span>
-                <span class="heart-letter" style="--i:29"> </span>
-                <span class="heart-letter" style="--i:30"> </span>
-                <span class="heart-letter" style="--i:31">❤</span>
-            </div>
-            
-            <!-- Строка 6 (нижняя часть сердца) -->
-            <div class="heart-row">
-                <span class="heart-letter" style="--i:32"> </span>
-                <span class="heart-letter" style="--i:33">❤</span>
-                <span class="heart-letter" style="--i:34"> </span>
-                <span class="heart-letter" style="--i:35">❤</span>
-                <span class="heart-letter" style="--i:36"> </span>
-            </div>
-            
-            <!-- Строка 7 (самая нижняя точка) -->
-            <div class="heart-row">
-                <span class="heart-letter" style="--i:37"> </span>
-                <span class="heart-letter" style="--i:38"> </span>
-                <span class="heart-letter" style="--i:39">❤</span>
-                <span class="heart-letter" style="--i:40"> </span>
-                <span class="heart-letter" style="--i:41"> </span>
-            </div>
-        </div>
+    <!-- ПРОСТОЕ СЕРДЦЕ В ПРАВОМ ВЕРХНЕМ УГЛУ (смещено левее и ниже) -->
+    <div class="simple-heart">
+        ❤️❤️<br>
+        ❤️H❤️<br>
+        Happy<br>
+        Birthday<br>
+        to you!<br>
+        ❤️❤️❤️<br>
+        ❤️
     </div>
 
     <!-- Текст -->
