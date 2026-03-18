@@ -18,7 +18,7 @@
             background-color: black;
         }
 
-        /* Фоновое фото */
+        /* Фоновое фото (вертикальное) */
         .background-photo {
             position: fixed;
             top: 0;
@@ -26,24 +26,25 @@
             width: 100vw;
             height: 100vh;
             background-image: url('foto.jpg');
-            background-size: cover;
+            background-size: contain;  /* Фото видно целиком */
             background-position: center center;
             background-repeat: no-repeat;
+            background-color: black;
             z-index: 1;
         }
 
-        /* Полупрозрачный слой */
+        /* Полупрозрачный слой для читаемости текста */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.2);
+            background-color: rgba(0, 0, 0, 0.15);
             z-index: 2;
         }
 
-        /* Контейнер для текста */
+        /* Контейнер для основного текста */
         .content {
             position: fixed;
             top: 0;
@@ -73,32 +74,65 @@
             opacity: 1;
         }
 
-        /* ПРОСТОЕ СЕРДЦЕ - смещено левее и ниже */
-        .simple-heart {
+        /* ОБЩИЙ СТИЛЬ ДЛЯ ВСЕХ УГЛОВЫХ НАДПИСЕЙ */
+        .corner-text {
             position: fixed;
-            /* Смещение: левее на 15см (150px) и ниже на 10см (100px) */
-            top: calc(20px + 100px); /* Было top: 20px, добавили 100px */
-            right: calc(20px + 150px); /* Было right: 20px, добавили 150px чтобы сместить левее */
-            z-index: 10;
-            font-family: monospace;
-            font-size: 20px;
+            font-size: 1.8rem;
             font-weight: bold;
-            color: #ff3366;
-            text-shadow: 0 0 10px #ff3366, 0 0 20px #ff3366;
-            background-color: rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 20px;
-            backdrop-filter: blur(2px);
-            animation: heartPulse 2s ease-in-out infinite;
-            line-height: 1.3;
-            text-align: center;
-            white-space: pre;
+            color: #ff0000;
+            text-shadow: 
+                0 0 10px #ff0000,
+                0 0 20px #ff3333,
+                0 0 30px #ff6666;
+            white-space: nowrap;
+            z-index: 10;
+            animation: pulse 1.5s ease-in-out infinite;
+            transform-origin: center;
+            letter-spacing: 2px;
+        }
+
+        /* ЛЕВЫЙ ВЕРХНИЙ УГОЛ */
+        .corner-tl {
+            top: 30px;
+            left: 30px;
+            transform: rotate(5deg); /* Немного повернут вправо */
+        }
+
+        /* ПРАВЫЙ ВЕРХНИЙ УГОЛ */
+        .corner-tr {
+            top: 30px;
+            right: 30px;
+            transform: rotate(-5deg); /* Немного повернут вправо (отрицательный угол = против часовой, но нам нужно вправо) */
+            /* Для правого угла чтобы текст был повернут вправо (по часовой), используем rotate(5deg) */
+            transform: rotate(5deg);
+        }
+
+        /* ЛЕВЫЙ НИЖНИЙ УГОЛ */
+        .corner-bl {
+            bottom: 30px;
+            left: 30px;
+            transform: rotate(5deg); /* Повернут вправо */
+        }
+
+        /* ПРАВЫЙ НИЖНИЙ УГОЛ */
+        .corner-br {
+            bottom: 30px;
+            right: 30px;
+            transform: rotate(5deg); /* Повернут вправо */
         }
 
         /* Анимация пульсации */
-        @keyframes heartPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.8;
+                transform: scale(1) rotate(5deg);
+                text-shadow: 0 0 10px #ff0000, 0 0 20px #ff3333;
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.1) rotate(5deg);
+                text-shadow: 0 0 20px #ff0000, 0 0 40px #ff6666, 0 0 60px #ff9999;
+            }
         }
 
         /* Финальная открытка */
@@ -137,41 +171,50 @@
             z-index: 15;
             cursor: pointer;
             border: 1px solid white;
+            backdrop-filter: blur(2px);
         }
 
         @media (max-width: 600px) {
             .message-text {
                 font-size: 2rem;
             }
-            .simple-heart {
-                font-size: 16px;
-                top: calc(10px + 70px);
-                right: calc(10px + 100px);
-                padding: 10px;
+            .corner-text {
+                font-size: 1.2rem;
+            }
+            .corner-tl {
+                top: 15px;
+                left: 15px;
+            }
+            .corner-tr {
+                top: 15px;
+                right: 15px;
+            }
+            .corner-bl {
+                bottom: 15px;
+                left: 15px;
+            }
+            .corner-br {
+                bottom: 15px;
+                right: 15px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Фоновое фото -->
+    <!-- Фоновое фото (вертикальное) -->
     <div class="background-photo"></div>
     
     <!-- Полупрозрачный слой -->
     <div class="overlay"></div>
 
-    <!-- ПРОСТОЕ СЕРДЦЕ В ПРАВОМ ВЕРХНЕМ УГЛУ (смещено левее и ниже) -->
-    <div class="simple-heart">
-        ❤️❤️<br>
-        ❤️H❤️<br>
-        Happy<br>
-        Birthday<br>
-        to you!<br>
-        ❤️❤️❤️<br>
-        ❤️
-    </div>
+    <!-- ПУЛЬСИРУЮЩИЕ НАДПИСИ ПО УГЛАМ -->
+    <div class="corner-text corner-tl">С днем рождения!</div>
+    <div class="corner-text corner-tr">С днем рождения!</div>
+    <div class="corner-text corner-bl">С днем рождения!</div>
+    <div class="corner-text corner-br">С днем рождения!</div>
 
-    <!-- Текст -->
+    <!-- Основной текст по центру -->
     <div class="content">
         <div id="messageDisplay" class="message-text"></div>
     </div>
@@ -190,7 +233,7 @@
     </audio>
 
     <script>
-        // --- ТВОЙ ТЕКСТ ---
+        // --- ТВОЙ ТЕКСТ (можешь изменить) ---
         const messages = [
             "Поздравляю с днем рождения!",
             "Желаю счастья и здоровья",
@@ -199,7 +242,7 @@
         ];
         
         // --- НАСТРОЙКИ ВРЕМЕНИ ---
-        const totalTime = 16;
+        const totalTime = 9;
         const delayBeforeFinalCard = 1;
         
         const messageDuration = (totalTime / messages.length) * 1000;
